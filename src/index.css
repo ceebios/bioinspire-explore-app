@@ -11,3 +11,22 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+
+@media (prefers-reduced-motion: no-preference) {
+  .bounce {
+    animation: Bounce infinite 1s linear;
+  }
+}
+
+@keyframes Bounce {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
