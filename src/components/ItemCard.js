@@ -7,7 +7,7 @@ import OndemandVideoIcon from '@mui/icons-material/OndemandVideo';
 import FileOpenIcon from '@mui/icons-material/FileOpen';
 import { ORDER } from "./Species";
 import { useContext } from "react";
-import { SearchContext, RasterContext } from "../context/Context";
+import { SearchContext, RasterContext,CardContext } from "../context/Context";
 import SpeedDial from '@mui/material/SpeedDial';
 import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
@@ -15,10 +15,11 @@ import AspectRatio from '@mui/joy/AspectRatio';
 import ReactPlayer from "react-player"
 export const cardSize = 400
 
-export const ItemCard = ({item}) => {
+export const ItemCard = ({item,index}) => {
   const [component, setComponent] = useState(null)
   const [search, setSearch] = useContext(SearchContext)
   const [raster, setRaster] = useContext(RasterContext)
+  const [cards, setCards] = useContext(CardContext)
 
   const handleSpecies = (x)=> {
     fetch(`https://api.gbif.org/v1/species?name=${x}&limit=1`)
@@ -91,7 +92,9 @@ export const ItemCard = ({item}) => {
   }
 
   return (
-    <Box sx={{width:`${cardSize}px`, borderRadius:1, overflow:'hidden'}} onMouseLeave={(e)=>{e.preventDefault();setComponent(null)}} >
+    <Box sx={{width:`${cardSize}px`, borderRadius:1, overflow:'hidden'}} 
+        onMouseOver={(e)=>{e.preventDefault();console.log(index);setCards({...cards,active:index})}}
+        onClick={(e)=>{e.preventDefault();console.log(index);setCards({...cards,active:index})}}>
         {getComponent()}
         <Box sx={{
           display: 'block',
@@ -103,40 +106,6 @@ export const ItemCard = ({item}) => {
         }}
         >          
         </Box>
-        <Box sx={{position:'absolute', bottom:0}}>
-          <SpeedDial
-            ariaLabel="SpeedDial"
-            sx={{ position: 'relative', bottom:5, left:0}}
-            icon={<SpeedDialIcon />}
-            FabProps={{"size": "small"}}
-          >
-            <SpeedDialAction
-              key="About"
-              icon={<QuestionMarkIcon/>}
-              tooltipTitle="About"
-              onClick={(e)=>{e.preventDefault();setComponent('text')}}
-            />
-            <SpeedDialAction
-              key="Species"
-              icon={<EmojiNatureIcon/>}
-              tooltipTitle="Species"
-              onClick={(e)=>{e.preventDefault();setComponent('species')}}
-            />         
-            <SpeedDialAction
-              key="Open reference"
-              icon={<FileOpenIcon/>}
-              tooltipTitle="Open reference"
-              onClick={(e)=>{e.preventDefault();window.open(item.source)}}
-            />             
-            <SpeedDialAction
-              key="Video"
-              icon={<OndemandVideoIcon/>}
-              tooltipTitle="Video"
-              onClick={(e)=>{e.preventDefault();setComponent('video')}}
-            />                     
-          </SpeedDial>
-        </Box>    
-
     </Box>
   )
 }
