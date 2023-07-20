@@ -15,7 +15,7 @@ function Cards() {
 
 
   const getCardImage = (item,index)=> (
-    <Box sx={{width:`${cardSize}px`, borderRadius:1, overflow:'hidden'}} 
+    <Box key={index} sx={{width:`${cardSize}px`, borderRadius:1, overflow:'hidden'}} 
         onMouseOver={(e)=>{e.preventDefault();setCards({...cards,active:index})}}
         onClick={(e)=>{e.preventDefault();setCards({...cards,active:index})}}>
         <Box sx={{position:'relative'}}>
@@ -72,18 +72,26 @@ function Cards() {
               <>
               <Typography variant='span'>{` `}</Typography>
               <Typography variant='span' key={x} onClick={(e)=> {e.preventDefault();handleSpecies(x)}}
-                sx={{cursor:"pointer",color:purple[500],"&:hover":{color:purple[800], textDecoration:'underline'}}}>
+                sx={{cursor:"pointer",color:purple[500],textDecoration:'underline',"&:hover":{color:purple[900]}}}>
                   {`${x};`}
               </Typography>
               </>
               )}
           </Box>
-          <Box position='absolute' sx={{bottom:'10px'}} >
-            <Typography variant='span' color='text.secondary'>{`Source: `}</Typography>
-            <Typography variant='span' onClick={(e)=> {e.preventDefault();window.open(item.source,'_blank')}}
-                sx={{cursor:"pointer",color:purple[500],"&:hover":{color:purple[800], textDecoration:'underline'}}}>
-                  {`Link`}
-              </Typography>
+          <Box sx={{position:'absolute', bottom:'10px', display:'flex', width:'100%', justifyContent:'space-between'}} >
+            <Box>
+              <Typography variant='span' color='text.secondary'>{`Source: `}</Typography>
+              <Typography variant='span' onClick={(e)=> {e.preventDefault();window.open(item.source,'_blank')}}
+                  sx={{cursor:"pointer",color:purple[500],"&:hover":{color:purple[800], textDecoration:'underline'}}}>
+                    {`Link`}
+                </Typography>
+            </Box>
+            <Box>
+              <Typography variant='span' color='text.secondary'>{`Author: `}</Typography>
+              <Typography variant='span'>
+                    {item.author}
+                </Typography>
+            </Box>            
           </Box>
       </Box>
     )

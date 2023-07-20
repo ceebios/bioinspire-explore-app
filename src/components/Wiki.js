@@ -93,7 +93,10 @@ const Wiki = () => {
         .then(res=>{
           if (res.results.bindings.length>0) {
             setWikidata(res.results.bindings[0])
+          } else {
+            setWikidata({})
           }
+
         })
       }
     },[search.species]);    
@@ -122,7 +125,14 @@ const Wiki = () => {
             summary:summary,
             image:img,
             link:link        
-          })
+          })        
+          } else {
+            setWiki({
+              title:"No Wikipedia article found",
+              summary:"",
+              image:"",
+              link:""        
+            })              
         }
       }
       fetchWiki(wikidata)

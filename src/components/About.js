@@ -1,27 +1,22 @@
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
-import DialogTitle from '@mui/material/DialogTitle';
-import HighlightOffIcon from '@mui/icons-material/HighlightOff';
 import { Box, Typography, Stack } from '@mui/material';
-import { useContext } from 'react';
-import { AppContext } from '../context/Context';
-import HelpIcon from '@mui/icons-material/Help';
-
 const About = () => {
-  const [app, setApp] = useContext(AppContext)
     
     return (
     <Box mt={1}>
       <Box sx={{borderTop:2,width:"90%",borderColor:'lightgray',ml:'5%'}}></Box>
-      <Stack direction={'row'} justifyContent={'center'}>
-        <HelpIcon sx={{fontSize:28, pt:'6px',pr:1}}/>
-        <Typography sx={{fontSize:28}}> About Bioinspire-Explore </Typography>         
+      <Stack direction={'row'} justifyContent={'center'} mt={2}>
+        <Box>
+          <Typography sx={{fontSize:24,textDecoration:'underline',textDecorationColor:'pink'}}>About Bioinspire-Explore</Typography>
+        </Box>  
       </Stack>
-      <Box width='60%' ml='20%'>
-        <Typography color={'text.secondary'} fontSize={20}>
-          Bioinspire-Explore is a project co-piloted by MNHN and Ceebios.
-          Its objective is to ...
+      <Box width='80%' ml='10%'>
+        <Typography m={1} color={'text.secondary'} fontSize={16}>
+        Bioinspire-Explore supports bioinspired innovation by providing accessible and in-depth information about the biological world.
+        </Typography>        
+        <Typography m={1} color={'text.secondary'} fontSize={16}>
+        Developed by CEEBIOS and the MNHN using Computer-Aided Biomimetics, Bioinspire-Explore is a free tool providing biological inspiration applicable to a wide range of fields, including design and engineering and even artistic endeavours.        </Typography>        
+        <Typography m={1} color={'text.secondary'} fontSize={16}>
+        Get inspired by biodiversity with Bioinspire-Explore!
         </Typography>        
       </Box>
     </Box>

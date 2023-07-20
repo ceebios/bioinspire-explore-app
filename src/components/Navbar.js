@@ -1,5 +1,4 @@
-import { AppBar, Toolbar, styled, Typography, Menu, MenuItem, IconButton, Stack,Box,Button} from "@mui/material"
-import Tooltip from '@mui/material/Tooltip';
+import { AppBar, Toolbar, styled, Typography,Tooltip, Stack, Button} from "@mui/material"
 import HelpOutline from "@mui/icons-material/HelpOutline";
 import Lang from "./Lang"
 import { useContext } from "react";
@@ -82,12 +81,19 @@ const Navbar = () => {
                 </Tooltip>
             </Stack>
             <Stack direction={'row'} spacing={2}>
-            <Button onClick={(e)=>handleClick(e,"/")} sx={location.pathname==='/'?active:passive}>Home</Button>
-                <Button onClick={(e)=>handleClick(e,"/learn")} sx={location.pathname==='/learn'?active:passive}>Learn</Button>
-                <Button onClick={(e)=>handleClick(e,"/explore")} sx={location.pathname==='/explore'?active:passive}>Explore</Button>
-                <Button onClick={(e)=>handleClick(e,"/inspire")} sx={location.pathname==='/inspire'?active:passive}>Inspire</Button>
+                <Button onClick={(e)=>handleClick(e,"/")} sx={location.pathname==='/'?active:passive}>Home</Button>
+                <Tooltip title="Discover species of existing bio-inspired projects">
+                <Button onClick={(e)=>handleClick(e,"/learn")} sx={location.pathname==='/learn'?active:passive}>Bio-inspiration</Button>
+                </Tooltip>
+                <Tooltip  title="Get familiar with a species of your choice">
+                <Button onClick={(e)=>handleClick(e,"/explore")} sx={location.pathname==='/explore'?active:passive}>Biodiversity</Button>
+                </Tooltip>
+                <Tooltip  title="AI for bio-inspiration and external ressources of biodiversity data">
+                <Button onClick={(e)=>handleClick(e,"/inspire")} sx={location.pathname==='/inspire'?active:passive}>Go Further</Button>
+                </Tooltip>                
             </Stack>
-
+            <Button onClick={(e)=>{e.preventDefault();setApp({...app, help:true})}} sx={{color:blue[800]}} startIcon={<HelpOutline fontSize="small" sx={{color:blue[800] }}/>}>Help</Button>
+            {/*
             <Box>
                 <IconButton
                     size="large"
@@ -112,6 +118,7 @@ const Navbar = () => {
                         </ListItemIcon>
                         <ListItemText>Help</ListItemText>
                     </MenuItem>
+                    
                     <MenuItem>
                         <ListItemIcon>
                             <LanguageIcon fontSize="small" sx={{color:'#039be5' }}/>
@@ -119,7 +126,9 @@ const Navbar = () => {
                         <ListItemText><Lang/></ListItemText>                        
                     </MenuItem>
                 </Menu>
-            </Box>                 
+            </Box>             
+            */}
+    
 
         </StyledToolbar>
     </AppBar>

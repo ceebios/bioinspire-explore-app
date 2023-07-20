@@ -34,6 +34,7 @@ function App() {
             </Routes>
           <About/>
           <Contact/>
+          <Help/>
         </Stack>
         </Box>      
       </Router>      
@@ -42,31 +43,3 @@ function App() {
 }
 
 export default App;
-
-
-/*
-        <Help/>
-        <About/>
-        <Stack width="100%" p="0px 0px 0px 0px">
-          <Landing/>
-          <Box>
-            <Box sx={{display:'flex',width:'100%', justifyContent:'center'}}>
-              <Typography sx={{fontSize:24,textDecoration:'underline',textDecorationColor:'pink'}}>Explore bio-inspired strategies</Typography>
-            </Box>            
-            <Cards/>          
-          </Box>
-          <Box>
-            <Box sx={{display:'flex',width:'100%', justifyContent:'center'}}>
-              <Typography sx={{fontSize:24,textDecoration:'underline',textDecorationColor:'pink'}}>Information about organism</Typography>
-            </Box>            
-            <Contextualisation/>
-          </Box>
-          <Box>
-            <Box sx={{display:'flex',width:'100%', justifyContent:'center'}}>
-              <Typography sx={{fontSize:24,textDecoration:'underline',textDecorationColor:'pink'}}>Related Concepts</Typography>
-            </Box>            
-            <Inspiration/>
-          </Box>          
-          <Contact/>
-        </Stack>
-*/
