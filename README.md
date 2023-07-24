@@ -1,5 +1,7 @@
 # Bioinspire-explore
-![Bioinspire-explore](capture.png "Title")
+<div align="center">
+    <img src="public/capture.png" alt="Screenshot"/>
+</div>
 
 ## Description
 
