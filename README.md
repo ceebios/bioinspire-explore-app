@@ -1,6 +1,6 @@
 # Bioinspire-explore
 <div align="center">
-    <img src="public/capture.png" alt="Screenshot"/>
+    <img src="public/capture.PNG" alt="Bioinspire-explore"/>
 </div>
 
 ## Description
