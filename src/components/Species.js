@@ -1,6 +1,6 @@
 import { Typography, Box, Autocomplete, TextField, Tooltip } from "@mui/material"
 import { useContext, useState } from "react";
-import { SearchContext, SelectedContext } from "../context/Context";
+import { SearchContext} from "../context/Context";
 import React from "react";
 
 var _ = require('lodash')
@@ -29,7 +29,6 @@ export const ORDER = {
 
 const Species = ({mode}) => {
     const [search, setSearch] = useContext(SearchContext)
-    const [selected, setSelected] = useContext(SelectedContext)
     const [options, setOptions] = useState([])
     const [name, setName] = useState("")
   
@@ -72,7 +71,6 @@ const Species = ({mode}) => {
         setSearch({...search, species:{}})
       } else {
           setSearch({...search, species:val})
-          setSelected({name:val.label, type:'taxon'})
       }      
     }
 

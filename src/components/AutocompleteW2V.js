@@ -1,12 +1,11 @@
 import { Typography, Box, Autocomplete, TextField } from "@mui/material"
 import {useState, useEffect, useContext } from "react";
-import { BSearchContext,SelectedContext, ExpansionContext } from "../context/Context";
+import { BSearchContext, ExpansionContext } from "../context/Context";
 import { host } from "./Config";
 
-const AutocompleteW2V = () => {
+const AutocompleteW2V = ({setSelected}) => {
     const [search, setSearch] = useContext(BSearchContext)
     const [expansion, setExpansion] = useContext(ExpansionContext)
-    const [selected, setSelected] = useContext(SelectedContext)
     const [options, setOptions] = useState([])
 
     useEffect(()=>{
@@ -35,6 +34,7 @@ const AutocompleteW2V = () => {
             node = {name:val,id:val,type:search.mode}
             setExpansion({...expansion, nodes:[{...node,score:1}], expanded:[node.name], expansions:[]})
             setSelected(node)
+            console.log(node)
           }
         setSearch({...search, search:node})
         setExpansion({...expansion, nodes:[], expanded:[], expansions:[]})

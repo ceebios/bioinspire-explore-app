@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { SearchContext, GraphContext, AppContext, SelectedContext } from "../context/Context";
+import { SearchContext, GraphContext, AppContext } from "../context/Context";
 import { saveAs } from "file-saver"; //or require
 
 import Box from "@mui/material/Box";
@@ -75,7 +75,6 @@ const Graph = () => {
   const [app, setApp] = useContext(AppContext)
   const [search, setSearch] = useContext(SearchContext)
   const [graph, setGraph] = useContext(GraphContext)
-  const [selected, setSelected] = useContext(SelectedContext)
 
   const [open, setOpen] = useState(true);
 
@@ -122,7 +121,6 @@ const Graph = () => {
 
   const nodeFocus = (item)=>{
     setSearch({...search, species:item})
-    setSelected({name:search.species.label, type:'taxon'})
   }
 
   const resetGraph = ()=>{

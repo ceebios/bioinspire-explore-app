@@ -113,23 +113,6 @@ export const BSearchProvider = (props)=>{
     );
 }
 
-export const SelectedContext = createContext();
-export const SelectedProvider = (props)=>{
-    const [selected, setSelected] = useState(
-        {
-            id:"Mollusca",
-            name:"Mollusca",
-            type:"taxon"
-        },
-    );
-    return (
-        <SelectedContext.Provider value={[selected, setSelected]}>
-            {props.children}
-        </SelectedContext.Provider>
-    );
-}
-
-
 export const RasterContext = createContext();
 export const RasterProvider = (props)=>{
     const [raster, setRaster] = useState(false)
