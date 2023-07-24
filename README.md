@@ -1,5 +1,5 @@
 # Bioinspire-explore
-![Bioinspire-explore](public/capture.png "Title")
+![Bioinspire-explore](capture.png "Title")
 
 ## Description
 
