@@ -58,10 +58,10 @@ function Contextualisation() {
                     <Button onClick={(e)=>{e.preventDefault();navigate('/inspire')}} startIcon={<EmojiNatureIcon/>}>Go further</Button>
                   </TabList>
                 </Box>
-                <TabPanel value="wiki"><Wiki/></TabPanel>
-                <TabPanel value="map"><Map/></TabPanel>
-                <TabPanel value="gallery"><Gallery/></TabPanel>
-                <TabPanel value="climate"><Climate/></TabPanel>
+                <TabPanel value="wiki"><Wiki search={search}/></TabPanel>
+                <TabPanel value="map"><Map search={search}/></TabPanel>
+                <TabPanel value="gallery"><Gallery search={search}/></TabPanel>
+                <TabPanel value="climate"><Climate search={search}/></TabPanel>
               </TabContext>:<></>}
             </Box>    
         </Stack>

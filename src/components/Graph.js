@@ -83,8 +83,15 @@ const Graph = () => {
       nodes:[],
       edges:[]
     }
+    let selected = false
     Object.entries(graph.nodes).forEach(([k,v])=>{
-      data.nodes.push({data:{label:k, id:k, rank:v.rank.toUpperCase(), key:v.key}})
+      console.log(search, v)
+      if (search.species.key===v.key) {
+        selected = true
+      } else {
+        selected = false
+      }
+      data.nodes.push({selected:selected, data:{label:k, id:k, rank:v.rank.toUpperCase(), key:v.key}})
     })
     Object.entries(graph.edges).forEach(([k,v])=>{
       v.forEach(iv=>{

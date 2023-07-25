@@ -1,12 +1,10 @@
-import { useContext, useEffect, useState } from "react"
-import { SearchContext } from "../context/Context"
+import { memo, useEffect, useState } from "react"
 import { Box, Typography } from "@mui/material"
 import Masonry from '@mui/lab/Masonry';
 
-const Gallery = () => {
+const Gallery = ({search}) => {
   const [cols, setCols] = useState(3)
   const [impercol, setImpercol] = useState(4)
-  const [search, setSearch] = useContext(SearchContext)
   const [images, setImages] = useState([])
 
   useEffect(()=>{
@@ -59,4 +57,4 @@ const Gallery = () => {
   )
 }
 
-export default Gallery
+export default memo(Gallery)

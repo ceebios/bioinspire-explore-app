@@ -8,10 +8,10 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import { COLORS } from "./ExpansionView";
 import AutocompleteW2V from "./AutocompleteW2V";
-import { BSearchContext } from "../context/Context";
+import { BSearchContext, SelectedContext} from "../context/Context";
 
 const Inspiration = () => {
-    const [selected, setSelected] = useState({name: 'Mollusca', id: 'Mollusca', type: 'taxon'})
+    const [selected, setSelected] = useContext(SelectedContext)
     const [bsearch, setBSearch] = useContext(BSearchContext)
 
     const modes = [

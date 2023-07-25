@@ -5,8 +5,8 @@ import CardMedia from '@mui/material/CardMedia';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Box } from '@mui/material';
-import { useContext, useEffect, useState,useRef } from "react";
-import { WikiContext, SearchContext } from "../context/Context";
+import { useContext, useEffect, useState,useRef, memo } from "react";
+import { WikiContext } from "../context/Context";
 
 const getQuery = (key)=> {
   const sparql = `SELECT ?item ?itemLabel ?itemDescription ?article ?image
@@ -24,10 +24,8 @@ const getQuery = (key)=> {
   return sparql
 }
 
-const Wiki = () => {
-    const [search, setSearch] = useContext(SearchContext)
+const Wiki = ({search}) => {
     const [wiki, setWiki] = useContext(WikiContext)
-    const [wikidata,setWikidata] = useState({})
     const firstUpdate = useRef(true);
 
     const fetchLink = async (title)=> {
@@ -79,6 +77,36 @@ const Wiki = () => {
       })
     }        
 
+    const fetchWiki = async (wikidata) => {
+      if ('itemLabel' in wikidata) {
+        console.log('Wiki/image')
+        const desc = 'itemDescription' in wikidata? wikidata.itemDescription.value:""
+        const title = `${wikidata.itemLabel.value}: ${desc}`
+        var img = 'image' in wikidata? wikidata.image.value:""
+        var link = 'article' in wikidata? wikidata.article.value:""
+        if (link==="") {
+          link = await fetchLink(wikidata.itemLabel.value)
+        }
+        if (img==="") {
+          img = await fetchImage(link)
+        }   
+        const summary = await fetchSummary(link)       
+        setWiki({
+          title:title,
+          summary:summary,
+          image:img,
+          link:link        
+        })        
+        } else {
+          setWiki({
+            title:"No Wikipedia article found",
+            summary:"",
+            image:"",
+            link:""        
+          })              
+      }
+    }    
+
     useEffect(() => {
       if (firstUpdate.current) {
         firstUpdate.current = false;
@@ -92,51 +120,15 @@ const Wiki = () => {
         .then(res=>res.json())
         .then(res=>{
           if (res.results.bindings.length>0) {
-            setWikidata(res.results.bindings[0])
+            fetchWiki(res.results.bindings[0])
           } else {
-            setWikidata({})
+            fetchWiki({})
           }
-
         })
       }
     },[search.species]);    
 
-    useEffect(() => {
-      if (firstUpdate.current) {
-        firstUpdate.current = false;
-        return;
-      }      
-      const fetchWiki = async () => {
-        if ('itemLabel' in wikidata) {
-          console.log('Wiki/image')
-          const desc = 'itemDescription' in wikidata? wikidata.itemDescription.value:""
-          const title = `${wikidata.itemLabel.value}: ${desc}`
-          var img = 'image' in wikidata? wikidata.image.value:""
-          var link = 'article' in wikidata? wikidata.article.value:""
-          if (link==="") {
-            link = await fetchLink(wikidata.itemLabel.value)
-          }
-          if (img==="") {
-            img = await fetchImage(link)
-          }   
-          const summary = await fetchSummary(link)       
-          setWiki({
-            title:title,
-            summary:summary,
-            image:img,
-            link:link        
-          })        
-          } else {
-            setWiki({
-              title:"No Wikipedia article found",
-              summary:"",
-              image:"",
-              link:""        
-            })              
-        }
-      }
-      fetchWiki(wikidata)
-    },[wikidata]);   
+
    
 
     const getCard=()=> (
@@ -187,4 +179,4 @@ const Wiki = () => {
     )
 }
 
-export default Wiki
+export default memo(Wiki)

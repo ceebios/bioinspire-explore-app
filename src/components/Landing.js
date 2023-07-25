@@ -156,7 +156,7 @@ function Landing() {
           <InfoBadge title="Learn from Biodiversity" desc="Get familiar with a species of your choice" target="/explore" icon={<TravelExploreIcon/>}  fit='scale-down' images={[]}/>
           <InfoBadge title="Go further" desc="Explore the scientific literature, videos, and naturalist sites related to your species of interest" target="/inspire" icon={<EmojiNatureIcon/>}  fit='scale-down' images={[]}/>
         </Stack>
-        <Box sx={{display:'flex',justifyContent:'center', mt:2}}>
+        <Box sx={{display:'flex',justifyContent:'center', mt:8}}>
             <ReactPlayer  url={"https://youtu.be/blnYA5BGCaA"}/>
           </Box>        
       </Stack>    

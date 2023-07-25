@@ -1,7 +1,7 @@
 
 import { Box, Button } from "@mui/material"
-import { useContext, useEffect } from "react"
-import { SearchContext, ClimateContext, RasterContext } from "../context/Context"
+import { useContext, useEffect, memo } from "react"
+import { ClimateContext, RasterContext } from "../context/Context"
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -15,9 +15,8 @@ import {GiMountains, GiDesert} from 'react-icons/gi'
 import { host } from "./Config";
 
 
-const Climate = () => {
+const Climate = ({search}) => {
   const [climate, setClimate] = useContext(ClimateContext)
-  const [search, setSearch] = useContext(SearchContext)
   const [raster, setRaster] = useContext(RasterContext)
   
   const units = {
@@ -104,7 +103,7 @@ const Climate = () => {
   )
 }
 
-export default Climate
+export default memo(Climate)
 
 
 /*
