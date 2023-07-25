@@ -7,6 +7,7 @@ const AutocompleteW2V = ({setSelected}) => {
     const [search, setSearch] = useContext(BSearchContext)
     const [expansion, setExpansion] = useContext(ExpansionContext)
     const [options, setOptions] = useState([])
+    const [value, setValue] = useState('Mollusca')
 
     useEffect(()=>{
       setOptions([])
@@ -21,8 +22,9 @@ const AutocompleteW2V = ({setSelected}) => {
     }
 
     const getAutocomplete = (q) => {
+        setValue(q)
         if (q.length>2) {
-          fetch(`${host}/autocomplete/${q}/${modeMap[search.mode.toLowerCase()]}`)
+          fetch(`${host}/autocomplete/${q.toLowerCase()}/${modeMap[search.mode.toLowerCase()]}`)
           .then(res=>res.json())
           .then(res=>setOptions(res))
         }
@@ -34,7 +36,7 @@ const AutocompleteW2V = ({setSelected}) => {
             node = {name:val,id:val,type:search.mode}
             setExpansion({...expansion, nodes:[{...node,score:1}], expanded:[node.name], expansions:[]})
             setSelected(node)
-            console.log(node)
+            setValue(node.name)
           }
         setSearch({...search, search:node})
         setExpansion({...expansion, nodes:[], expanded:[], expansions:[]})
@@ -59,7 +61,8 @@ const AutocompleteW2V = ({setSelected}) => {
             </Box>
           )}
         onChange={(e,val)=>handleChange(val)}
-        value={((search.search!==null)&&(search.search!==undefined))?search.search.name:''}
+        value={value}
+        noOptionsText={value===""?"Type to search":`No such ${search.mode} in BiOMIg database`}
     />
     )
 }

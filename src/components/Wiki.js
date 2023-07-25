@@ -26,7 +26,6 @@ const getQuery = (key)=> {
 
 const Wiki = ({search}) => {
     const [wiki, setWiki] = useContext(WikiContext)
-    const firstUpdate = useRef(true);
 
     const fetchLink = async (title)=> {
       let url = `https://en.wikipedia.org/w/api.php?action=opensearch&search=${encodeURIComponent(title)}&limit=1&format=json&origin=*&redirects=resolve`
@@ -108,10 +107,6 @@ const Wiki = ({search}) => {
     }    
 
     useEffect(() => {
-      if (firstUpdate.current) {
-        firstUpdate.current = false;
-        return;
-      }      
       if ('key' in search.species) {
         console.log('Wiki/text')
         const sparql = encodeURIComponent(getQuery(search.species.key))
