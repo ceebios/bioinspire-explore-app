@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import { SelectedProvider, ExpansionModeProvider,BSearchProvider,CardProvider, BiomigProvider, ClimateProvider, CompatProvider, AppProvider, SearchProvider, WikiProvider, ExpansionProvider, GraphProvider, RasterProvider } from './context/Context';
+import { W2VModeProvider, W2VValueProvider, SelectedProvider, ExpansionModeProvider, CardProvider, BiomigProvider, ClimateProvider, CompatProvider, AppProvider, SearchProvider, WikiProvider, ExpansionProvider, GraphProvider, RasterProvider } from './context/Context';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -17,23 +17,25 @@ root.render(
                   <ClimateProvider>
                     <BiomigProvider>
                       <CardProvider>
-                        <BSearchProvider>
-                          <ExpansionModeProvider>
-                            <SelectedProvider>
-                              <App/>
-                            </SelectedProvider>
-                          </ExpansionModeProvider>                          
-                        </BSearchProvider>                          
-                      </CardProvider>                      
-                    </BiomigProvider>                    
-                  </ClimateProvider>                  
+                        <ExpansionModeProvider>
+                          <SelectedProvider>
+                            <W2VValueProvider >
+                              <W2VModeProvider>
+                                <App />
+                              </W2VModeProvider>
+                            </W2VValueProvider>
+                          </SelectedProvider>
+                        </ExpansionModeProvider>
+                      </CardProvider>
+                    </BiomigProvider>
+                  </ClimateProvider>
                 </CompatProvider>
-              </RasterProvider>              
-            </GraphProvider>            
+              </RasterProvider>
+            </GraphProvider>
           </ExpansionProvider>
         </WikiProvider>
       </SearchProvider>
     </AppProvider>
-  </React.StrictMode>
+  </React.StrictMode >
 );
 

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react";
-import { SearchContext, GraphContext, AppContext } from "../context/Context";
+import { SearchContext, GraphContext, AppContext, W2VValueContext } from "../context/Context";
 import { saveAs } from "file-saver"; //or require
 
 import Box from "@mui/material/Box";
@@ -21,25 +21,26 @@ import ColaLayout from 'cytoscape-cola';
 import fcose from 'cytoscape-fcose';
 import euler from 'cytoscape-euler';
 import cise from 'cytoscape-cise';
+import { red } from '@mui/material/colors'
 
 Cytoscape.use(COSEBilkent);
 Cytoscape.use(DagreLayout);
 Cytoscape.use(ColaLayout);
 Cytoscape.use(fcose);
-Cytoscape.use( euler );
-Cytoscape.use( cise );
+Cytoscape.use(euler);
+Cytoscape.use(cise);
 
 
 var _ = require("lodash");
 
 const COLORS = {
-  SPECIES:"#fb2056",
-  GENUS:"#fc8f5b",
-  FAMILY:"#ffd055",
-  ORDER:"#8dd58c",
-  CLASS:"#38c9b1",
-  PHYLUM:"#1798c3",
-  KINGDOM:"#182573",
+  SPECIES: "#fb2056",
+  GENUS: "#fc8f5b",
+  FAMILY: "#ffd055",
+  ORDER: "#8dd58c",
+  CLASS: "#38c9b1",
+  PHYLUM: "#1798c3",
+  KINGDOM: "#182573",
 }
 
 const style = [
@@ -48,77 +49,78 @@ const style = [
     style: {
       width: 40,
       height: 40,
-      shape: node=>node.data('rank')==='KINGDOM'? 'rectangle':'ellipse',
+      shape: node => node.data('rank') === 'KINGDOM' ? 'rectangle' : 'ellipse',
       label: 'data(id)',
-      'font-size':10,
-      'background-color':node=>COLORS[node.data('rank')],
+      'font-size': 10,
+      'background-color': node => COLORS[node.data('rank')],
     }
   },
   {
     selector: 'edge',
     style: {
-      width:1,
+      width: 1,
     }
   },
   {
-    selector:':selected',
-    style:{
-      'border-width':2
+    selector: ':selected',
+    style: {
+      'border-width': 2
     }
   }
 ]
 
-const hierarchy = ["kingdom","phylum","class","order","family","genus","species","subspecies"]
+const hierarchy = ["kingdom", "phylum", "class", "order", "family", "genus", "species", "subspecies"]
 
-const Graph = () => {
+const Graph = ({ height }) => {
   const [cy, setCy] = useState();
   const [app, setApp] = useContext(AppContext)
   const [search, setSearch] = useContext(SearchContext)
   const [graph, setGraph] = useContext(GraphContext)
+  const [w2vvalue, setW2vvalue] = useContext(W2VValueContext)
+
 
   const [open, setOpen] = useState(true);
 
-  const formatGraphData = (graph)=>{
+  const formatGraphData = (graph) => {
     var data = {
-      nodes:[],
-      edges:[]
+      nodes: [],
+      edges: []
     }
     let selected = false
-    Object.entries(graph.nodes).forEach(([k,v])=>{
-      console.log(search, v)
-      if (search.species.key===v.key) {
+    Object.entries(graph.nodes).forEach(([k, v]) => {
+      if (search.species.key === v.key) {
         selected = true
       } else {
         selected = false
       }
-      data.nodes.push({selected:selected, data:{label:k, id:k, rank:v.rank.toUpperCase(), key:v.key}})
+      data.nodes.push({ selected: selected, data: { label: k, id: k, rank: v.rank.toUpperCase(), key: v.key } })
     })
-    Object.entries(graph.edges).forEach(([k,v])=>{
-      v.forEach(iv=>{
-        data.edges.push({data:{source:k, target:iv}})
-      })      
+    Object.entries(graph.edges).forEach(([k, v]) => {
+      v.forEach(iv => {
+        data.edges.push({ data: { source: k, target: iv } })
+      })
     })
     return data
   }
 
-  const populateGraph = (item)=>{
-    var G = {...graph}
+  const populateGraph = (item) => {
+    var G = { ...graph }
     let itemname = item[item.rank.toLowerCase()]
-    G.nodes[itemname] = {key:item.key,label:itemname, rank:item.rank}
+    G.nodes[itemname] = { key: item.key, label: itemname, rank: item.rank }
     const ix = hierarchy.indexOf(item.rank.toLowerCase())
-    for (var i=ix-1;i>=0;i--) {
+    for (var i = ix - 1; i >= 0; i--) {
       if (hierarchy[i] in item) {
         // Add node
-        G.nodes[item[hierarchy[i]]] = {key:item[hierarchy[i]+'Key'],label:item[hierarchy[i]],rank:hierarchy[i]}
+        G.nodes[item[hierarchy[i]]] = { key: item[hierarchy[i] + 'Key'], label: item[hierarchy[i]], rank: hierarchy[i] }
         // Add edge
         if (item[hierarchy[i]] in G.edges) {
           if (!G.edges[item[hierarchy[i]]].includes(itemname)) {
             G.edges[item[hierarchy[i]]].push(itemname)
-          }        
+          }
         }
         else {
           G.edges[item[hierarchy[i]]] = [itemname]
-        }           
+        }
         // Update name
         itemname = item[hierarchy[i]]
       }
@@ -126,161 +128,162 @@ const Graph = () => {
     setGraph(G)
   }
 
-  const nodeFocus = (item)=>{
-    setSearch({...search, species:item})
+  const nodeFocus = (item) => {
+    setSearch({ ...search, species: item })
+    setW2vvalue(item.label)
   }
 
-  const resetGraph = ()=>{
+  const resetGraph = () => {
     setGraph({
-      nodes:{},
-      edges:{}
+      nodes: {},
+      edges: {}
     })
-    setSearch({...search})
+    setSearch({ ...search, species: {} })
   }
 
-  const expandGraph = ()=> {
+  const expandGraph = () => {
     if ('key' in search.species) {
-      if ((ORDER[search.species.rank] || 8)<7) {
+      if ((ORDER[search.species.rank] || 8) < 7) {
         fetch(`https://api.gbif.org/v1/species/${search.species.key}/children?limit=1000`)
-        .then(res=>res.json())
-        .then(res=>{
-          let items = res.results.filter((e)=>Object.keys(COLORS).includes(e.rank.toUpperCase()))
-          items = _.shuffle(items)
-          items.slice(0,5).forEach(item=>populateGraph(item))
-        })
-      }      
+          .then(res => res.json())
+          .then(res => {
+            let items = res.results.filter((e) => Object.keys(COLORS).includes(e.rank.toUpperCase()))
+            items = _.shuffle(items)
+            items.slice(0, 5).forEach(item => populateGraph(item))
+          })
+      }
     }
   }
 
-  useEffect(()=>{
-    if (('key' in search.species)&&!(search.species.id in graph.nodes)) {
+  useEffect(() => {
+    if (('key' in search.species) && !(search.species.id in graph.nodes)) {
       fetch(`https://api.gbif.org/v1/species/${search.species.key}`)
-      .then(res=>res.json())
-      .then(res=>populateGraph(res))
+        .then(res => res.json())
+        .then(res => populateGraph(res))
     }
-  },[search.species])
+  }, [search.species])
 
-  useEffect(()=>{
-    if (cy!==undefined) {
-      cy.layout({ name: 'cose-bilkent',animate:true}).run()
+  useEffect(() => {
+    if (cy !== undefined) {
+      cy.layout({ name: 'cose-bilkent', animate: true }).run()
     }
-  },[graph])
+  }, [graph])
 
   let component
-  if (cy===undefined) {
-    component =  <CytoscapeComponent 
-                  elements={CytoscapeComponent.normalizeElements(formatGraphData(graph))}
-                  style={ { width: 0.49*app.width, height: '700px' } } 
-                  stylesheet={style}
-                  minZoom={0.5}
-                  maxZoom={2}
-                  panningEnabled={true}
-                  userZoomingEnabled={true}
-                  cy={(cy=>{
-                    setCy(cy)   
-                    cy.layout({ name: 'cose-bilkent',animate:false}).run()
-                    cy.on("tap", "node", (event) => {
-                      nodeFocus(event.target._private.data)
-                    });
-                    cy.on('mouseover', (event) => {
-                      if(event.cy.container()) {
-                        event.cy.container().style.cursor = 'pointer';
-                      }
-                    })
-                    cy.on('mouseout', (event) => {
-                      if(event.cy.container()) {
-                        event.cy.container().style.cursor = 'default';
-                      }
-                    })             
-                })
-                }
-                />
+  if (cy === undefined) {
+    component = <CytoscapeComponent
+      elements={CytoscapeComponent.normalizeElements(formatGraphData(graph))}
+      style={{ width: 0.49 * app.width, height: '100%' }}
+      stylesheet={style}
+      minZoom={0.5}
+      maxZoom={2}
+      panningEnabled={true}
+      userZoomingEnabled={true}
+      cy={(cy => {
+        setCy(cy)
+        cy.layout({ name: 'cose-bilkent', animate: false }).run()
+        cy.on("tap", "node", (event) => {
+          nodeFocus(event.target._private.data)
+        });
+        cy.on('mouseover', (event) => {
+          if (event.cy.container()) {
+            event.cy.container().style.cursor = 'pointer';
+          }
+        })
+        cy.on('mouseout', (event) => {
+          if (event.cy.container()) {
+            event.cy.container().style.cursor = 'default';
+          }
+        })
+      })
+      }
+    />
   } else {
-    component =  <CytoscapeComponent 
-                  elements={CytoscapeComponent.normalizeElements(formatGraphData(graph))}
-                  style={ { width: 0.49*app.width, height: '700px' } } 
-                  stylesheet={style}
-                  minZoom={0.5}
-                  maxZoom={2}
-                  panningEnabled={true}
-                  userZoomingEnabled={true}
-                  cy={(cy=>{
-                    setCy(cy)   
-                    cy.on("tap", "node", (event) => {
-                      nodeFocus(event.target._private.data)
-                    });
-                    cy.on('mouseover', (event) => {
-                      if(event.cy.container()) {
-                        event.cy.container().style.cursor = 'pointer';
-                      }
-                    })
-                    cy.on('mouseout', (event) => {
-                      if(event.cy.container()) {
-                        event.cy.container().style.cursor = 'default';
-                      }
-                    })             
-                })
-                }
-                />
+    component = <CytoscapeComponent
+      elements={CytoscapeComponent.normalizeElements(formatGraphData(graph))}
+      style={{ width: 0.49 * app.width, height: '100%' }}
+      stylesheet={style}
+      minZoom={0.5}
+      maxZoom={2}
+      panningEnabled={true}
+      userZoomingEnabled={true}
+      cy={(cy => {
+        setCy(cy)
+        cy.on("tap", "node", (event) => {
+          nodeFocus(event.target._private.data)
+        });
+        cy.on('mouseover', (event) => {
+          if (event.cy.container()) {
+            event.cy.container().style.cursor = 'pointer';
+          }
+        })
+        cy.on('mouseout', (event) => {
+          if (event.cy.container()) {
+            event.cy.container().style.cursor = 'default';
+          }
+        })
+      })
+      }
+    />
   }
 
   return (
-    <Box position='relative'>
+    <Box sx={{ position: 'relative', height: `max(700px, calc(100vh - 340px - ${height}px))` }}>
       {component}
-      <Box sx={{position:'absolute', top:5,left:5}}>
-        {Object.entries(COLORS).map(([k,v])=>
-          <Box key={k} color={v} sx={{fontWeight:'bold', fontSize:12}}>{k}</Box>
+      <Box sx={{ position: 'absolute', top: 5, left: 5 }}>
+        {Object.entries(COLORS).map(([k, v]) =>
+          <Box key={k} color={v} sx={{ fontWeight: 'bold', fontSize: 12 }}>{k}</Box>
         )}
       </Box >
 
-      <Box sx={{position:'absolute', bottom:0}}>
-      <SpeedDial
-        ariaLabel="SpeedDial"
-        sx={{ position: 'relative', bottom:5}}
-        icon={<SpeedDialIcon onClick={(e)=>{e.preventDefault();setOpen(!open)}}/>}
-        FabProps={{"size": "small"}}
-        open={open}
-      >
-        <SpeedDialAction
-          key="Zoom in"
-          icon={<ZoomInIcon/>}
-          tooltipTitle="Zoom in"
-          onClick={() => {
-            cy.zoom(Math.min(2.5,cy.zoom() + 0.25))
-          }}
-        />
-        <SpeedDialAction
-          key="Zoom out"
-          icon={<ZoomOutIcon/>}
-          tooltipTitle="Zoom out"
-          onClick={() => {
-            cy.zoom(Math.max(0.5,cy.zoom() - 0.25))
-          }}
-        />
-        <SpeedDialAction
-          key="Clear"
-          icon={<DeleteOutlineIcon/>}
-          tooltipTitle="Clear"
-          onClick={() => resetGraph()}
-        />
-        <SpeedDialAction
-          key="Save copy"
-          icon={<SaveAltIcon/>}
-          tooltipTitle="Save copy"
-          onClick={() => {
-            saveAs(cy.png(), "graph.png");
-          }}
-        />        
-        <SpeedDialAction
-          key="Expand"
-          icon={<AllOutIcon/>}
-          tooltipTitle="Expand children"
-          onClick={() => expandGraph()}
-        />        
+      <Box sx={{ position: 'absolute', top: 130 }}>
+        <SpeedDial
+          ariaLabel="SpeedDial"
+          sx={{ position: 'relative', bottom: 5 }}
+          icon={<SpeedDialIcon onClick={(e) => { e.preventDefault(); setOpen(!open) }} />}
+          FabProps={{ "size": "small" }}
+          open={open}
+        >
+          <SpeedDialAction
+            key="Zoom in"
+            icon={<ZoomInIcon />}
+            tooltipTitle="Zoom in"
+            onClick={() => {
+              cy.zoom(Math.min(2.5, cy.zoom() + 0.25))
+            }}
+          />
+          <SpeedDialAction
+            key="Zoom out"
+            icon={<ZoomOutIcon />}
+            tooltipTitle="Zoom out"
+            onClick={() => {
+              cy.zoom(Math.max(0.5, cy.zoom() - 0.25))
+            }}
+          />
+          <SpeedDialAction
+            key="Clear"
+            icon={<DeleteOutlineIcon color='error' />}
+            tooltipTitle="Clear graph"
+            onClick={() => resetGraph()}
+          />
+          <SpeedDialAction
+            key="Save copy"
+            icon={<SaveAltIcon />}
+            tooltipTitle="Save copy"
+            onClick={() => {
+              saveAs(cy.png(), "graph.png");
+            }}
+          />
+          <SpeedDialAction
+            key="Expand"
+            icon={<AllOutIcon />}
+            tooltipTitle="Expand children"
+            onClick={() => expandGraph()}
+          />
 
-      </SpeedDial>
-      </Box>    
-    </Box>
+        </SpeedDial>
+      </Box>
+    </Box >
   )
 }
 

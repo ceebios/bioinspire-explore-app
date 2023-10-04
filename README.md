@@ -16,7 +16,7 @@ Using *Computer-Aided Biomimetics*, **Bioinspire-Explore** provides biological i
 ## Data
 
 **Bioinspire-expore** uses data from the follwing sources:
-- MNHN: Bio-inspiration projects examples
+- MNHN: Bioinspiration projects examples
 - GBIF: Names, Taxonomy, Images and Distribution ranges of organisms
 - Wikipedia: Article entries for selected organisms
 - WorldClim: Climate data over distribution ranges

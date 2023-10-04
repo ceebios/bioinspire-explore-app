@@ -2,24 +2,25 @@ import { memo, useEffect, useState } from "react"
 import { Box, Typography } from "@mui/material"
 import Masonry from '@mui/lab/Masonry';
 
-const Gallery = ({search}) => {
+const Gallery = ({ search }) => {
   const [cols, setCols] = useState(3)
   const [impercol, setImpercol] = useState(4)
   const [images, setImages] = useState([])
 
-  useEffect(()=>{
+  useEffect(() => {
     if ('key' in search.species) {
       console.log('Gallery')
-      const url = `https://api.gbif.org/v1/occurrence/search?limit=${cols*impercol}&media_type=stillImage&taxon_key=${search.species.key}`
+      const url = `https://api.gbif.org/v1/occurrence/search?limit=${cols * impercol}&media_type=stillImage&taxon_key=${search.species.key}`
       fetch(url)
-      .then(results => results.json())
-      .then(data => setImages(data.results.map((el)=>el.media[0])))
+        .then(results => results.json())
+        .then(data => setImages(data.results.map((el) => el.media[0])))
     }
-  },[search.species])
+  }, [search.species])
 
   return (
-    <Box 
-      sx={{ width: "100%", height:'650px', overflowY:'scroll',
+    <Box
+      sx={{
+        width: "100%", height: '650px', overflowY: 'scroll',
         scrollbarColor: "rgba(46,54,69,0.5) rgba(210,210,210,0.5)",
         scrollbarWidth: "thin",
         '&::-webkit-scrollbar': {
@@ -34,16 +35,16 @@ const Gallery = ({search}) => {
           outline: '0px solid slategrey',
         }
       }}>
-      {search.species.label===undefined? <Typography>No species selected</Typography>:    
+      {search.species.label === undefined ? <Typography>No species selected</Typography> :
         <Masonry columns={cols} spacing={1} >
           {images.map((item, index) => (
-            <Box key={index} sx={{cursor:'pointer'}} 
-            onClick={(e)=>window.open(item.references)}> 
+            <Box key={index} sx={{ cursor: 'pointer' }}
+              onClick={(e) => window.open(item.references)}>
               <img
                 src={item.identifier}
                 alt={item.title}
-                loading="lazy"      
-                onError={(event) => event.target.style.display = 'none'}        
+                loading="lazy"
+                onError={(event) => event.target.style.display = 'none'}
                 style={{
                   display: 'block',
                   width: '100%',
