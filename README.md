@@ -11,7 +11,7 @@ It is an open-source tool developed by the BiOMIg team at [CEEBIOS](https://ceeb
 
 Using *Computer-Aided Biomimetics*, **Bioinspire-Explore** provides biological inspiration applicable to a wide range of fields, including design and engineering and even artistic endeavours.
 
-**Get inspired by biodiversity with Bioinspire-Explore!** -> [Bioinspire-Explore](https://bioinspire-explore.mnhn.com/)
+**Get inspired by biodiversity with Bioinspire-Explore!** -> [Bioinspire-Explore](https://bioinspire-explore.mnhn.fr/)
 
 ## Partners
 - [Ceebios](https://ceebios.com/)
@@ -21,7 +21,7 @@ Using *Computer-Aided Biomimetics*, **Bioinspire-Explore** provides biological i
 - [NextGenEU](https://next-generation-eu.europa.eu/index_en#make-it-green)
 
 ## Related projects
-- [Biomig Search](https://www.biomig-search.com)
+- [Biomig Search](https://biomig-search.com)
 
 ## Data
 
