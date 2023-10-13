@@ -59,7 +59,7 @@ const logos = () => {
           <img style={{ height: "46px" }} src={path + "/relance.png"} alt="France Relance" />
         </Typography>
       </Tooltip>
-      <Tooltip title='France Relance'>
+      <Tooltip title='NextGenEU'>
         <Typography
           noWrap
           component="a"

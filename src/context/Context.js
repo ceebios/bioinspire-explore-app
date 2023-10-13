@@ -182,15 +182,6 @@ export const CardProvider = (props) => {
         active: 0,
         cards: [
             {
-                img: 'https://www.publicdomainpictures.net/pictures/20000/velka/shark-jaws-8712975160110gd.jpg',
-                vid: 'https://www.youtube.com/watch?v=_5aHb0h2bvs',
-                title: 'Paleo-bioinspiration and the jaws of fish',
-                text: `In a 2012 paper in Scientific Reports, Grubich et al. describe the clamping forces exerted by the jaws of two Miocene-era piranha relatives, one present and one extinct. These clamping forces, among the most important developed by Life, functionally demonstrate, through measurements and simulations, the extraordinary efficiency of the bite of these past and present Amazonian fishes, and provide a mechanistic justification for their predatory dominance.`,
-                author: 'Ceebios',
-                species: ["Serrasalmus rhombeus", "Megapiranha paranensis", "Carcharodon megalodon"],
-                source: 'http://doi.org/10.1038/srep01009',
-            },
-            {
                 img: 'https://images.unsplash.com/photo-1646976263562-5bec993ddf0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1854&q=80',
                 vid: 'https://www.youtube.com/watch?v=IqrLxtpk7YY',
                 title: 'AntBot, the ant robot',
@@ -207,15 +198,6 @@ export const CardProvider = (props) => {
                 author: 'Ceebios',
                 species: ["Fusarium solani", "Pleurotus ostreatus", "Rhizopus arrhizus", "Phanerochaete chrysosporium", "Phanerochaete sordida", "Tramates hirsuta", "Tramates versicolor", "Lentinus edodes"],
                 source: 'http://link.springer.com/10.1007/978-3-319-99398-0_3',
-            },
-            {
-                img: 'https://specials-images.forbesimg.com/imageserve/5da853decd594c00062148a1/960x0.jpg',
-                vid: 'https://www.youtube.com/watch?v=o1TS2nsGzSI',
-                title: 'The Blob: optimised decisions, anticipation and knowledge sharing',
-                text: `The Blob “Physarum polycephalum” is able to learn from its physical environment to adapt its development strategy to efficiently access resources. A unicellular being measuring a few centimetres to several metres in diameter, this organism does not have a brain as such, yet is capable of learning from past experience and solving problems related to its environment, inspiring research in optimisation`,
-                author: 'Ceebios',
-                species: ["Physarum polycephalum"],
-                source: 'http://dx.doi.org/10.1098/rstb.2018.0368',
             },
             {
                 img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Rhinolophus_smithersi.jpg/580px-Rhinolophus_smithersi.jpg',
